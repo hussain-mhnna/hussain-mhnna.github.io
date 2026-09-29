@@ -63,19 +63,24 @@ main,footer{position:relative;z-index:1}
 .hero-mark{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
 /* blur + dim: sharp photo crossfades into a pre-blurred, darker copy while a black veil rises */
 .scrim{position:absolute;inset:0;z-index:3;background:var(--bg);opacity:0;transition:opacity .9s var(--ease)}
-.giant{transition:opacity .7s var(--ease)}
+.giant .row{transition:transform 1.1s var(--out),opacity .8s var(--ease)}
 .p-sharp{transition:opacity .8s var(--ease)}
 .p-blur{opacity:0;transition:opacity .8s var(--ease)}
 .stage.soft .p-blur{opacity:1}
-.stage.soft .giant,.stage.soft .p-sharp{opacity:0}
+.stage.soft .p-sharp{opacity:0}
+.stage.soft .giant .row:first-child{transform:translate3d(-46vw,0,0);opacity:0}
+.stage.soft .giant .row:last-child{transform:translate3d(46vw,0,0);opacity:0}
 .stage.soft .scrim{opacity:.55}
 .stage.gone .scrim{opacity:1}
 @keyframes fadeAway{to{opacity:0}}
+@keyframes splitL{to{transform:translate3d(-46vw,0,0);opacity:0}}
+@keyframes splitR{to{transform:translate3d(46vw,0,0);opacity:0}}
 @keyframes veil{to{opacity:1}}
 @keyframes appear{from{opacity:0}to{opacity:1}}
 @supports (animation-timeline: scroll()){
   /* scrubbed with the scroll by the browser itself — off the main thread */
-  .stage .giant{animation:fadeAway both;animation-timing-function:cubic-bezier(.4,0,.6,1);animation-timeline:scroll(root);animation-range:0 26vh}
+  .stage .giant .row:first-child{animation:splitL both;animation-timing-function:cubic-bezier(.33,0,.2,1);animation-timeline:scroll(root);animation-range:0 38vh}
+  .stage .giant .row:last-child{animation:splitR both;animation-timing-function:cubic-bezier(.33,0,.2,1);animation-timeline:scroll(root);animation-range:1vh 40vh}
   .stage .p-blur{animation:appear both;animation-timing-function:cubic-bezier(.45,0,.55,1);animation-timeline:scroll(root);animation-range:2vh 22vh}
   .stage .p-sharp{animation:fadeAway both;animation-timing-function:cubic-bezier(.45,0,.55,1);animation-timeline:scroll(root);animation-range:2vh 34vh}
   .stage .scrim{animation:veil both;animation-timing-function:cubic-bezier(.4,0,.7,1);animation-timeline:scroll(root);animation-range:6vh 58vh}
