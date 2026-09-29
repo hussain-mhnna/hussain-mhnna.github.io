@@ -55,19 +55,22 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--rim);outline-offset
 .lang .ar{font-family:var(--arabic)} .lang .en{font-family:var(--latin)}
 
 /* hero */
-.hero{position:relative;height:clamp(640px,100svh,960px);overflow:hidden;isolation:isolate}
-/* leaving the hero: once you scroll past it the curtain opens on its own clock —
-   pure CSS transitions on transform/opacity, nothing recalculated per scroll frame */
-.giant .row{will-change:transform,opacity;transition:transform 1.25s var(--out),opacity .9s var(--ease)}
-.portrait{transition:transform 1.4s var(--out)}
-.hero.away .giant .row:first-child{transform:translate3d(-46vw,0,0);opacity:0}
-.hero.away .giant .row:last-child{transform:translate3d(46vw,0,0);opacity:0;transition-delay:.06s}
-.hero.away .portrait{transform:translate3d(0,7%,0) scale(.94)}
-.hero-sentinel{position:absolute;left:0;top:22%;width:1px;height:1px;pointer-events:none}
-.hero::after{ /* warm rim light that follows the pointer */
-  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;mix-blend-mode:screen;
-  background:radial-gradient(520px circle at var(--mx,72%) var(--my,38%),rgba(240,164,91,.16),transparent 60%);
-  transition:opacity .6s;
+/* the portrait stays put behind the page; the page scrolls over it while it softens and fades.
+   Only opacity changes (sharp → pre-blurred copy → nothing), so phones never re-render a blur. */
+.stage{position:fixed;left:0;right:0;top:0;height:clamp(640px,100svh,960px);z-index:0;overflow:hidden;pointer-events:none;transition:opacity 1s var(--ease)}
+main,footer{position:relative;z-index:1}
+.hero{position:relative;height:clamp(640px,100svh,960px);isolation:isolate}
+.hero-mark{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
+.giant{transition:opacity .8s var(--ease)}
+.p-sharp{transition:opacity 1s var(--ease)}
+.stage.soft .giant,.stage.soft .p-sharp{opacity:0}
+.stage.gone{opacity:0}
+@keyframes fadeAway{to{opacity:0}}
+@supports (animation-timeline: scroll()){
+  /* scrubbed with the scroll by the browser itself — off the main thread */
+  .stage .giant{animation:fadeAway linear both;animation-timeline:scroll(root);animation-range:0 38vh}
+  .stage .p-sharp{animation:fadeAway linear both;animation-timeline:scroll(root);animation-range:6vh 62vh}
+  .stage{animation:fadeAway linear both;animation-timeline:scroll(root);animation-range:48vh 110vh}
 }
 .giant{
   position:absolute;left:0;right:0;top:9%;z-index:1;margin:0;direction:ltr;
@@ -78,16 +81,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--rim);outline-offset
 .giant .row{display:block;overflow:hidden;padding-block:.02em}
 .giant .row > span{display:inline-block;animation:rise 1.4s var(--out) both}
 .giant .row + .row > span{animation-delay:.1s}
-.js .giant .row > span,.js .portrait img{animation-play-state:paused}
-.js.ready .giant .row > span,.js.ready .portrait img{animation-play-state:running}
+.js .giant .row > span,.js .pin{animation-play-state:paused}
+.js.ready .giant .row > span,.js.ready .pin{animation-play-state:running}
 @keyframes rise{from{transform:translateY(105%)}to{transform:none}}
 
-.portrait{
-  position:absolute;z-index:2;bottom:0;left:0;right:0;margin-inline:auto;height:98%;aspect-ratio:800/1334;max-width:none;
-  will-change:transform;
-}
-.portrait picture,.portrait img{display:block;width:100%;height:100%}
-.portrait img{animation:lift 1.8s .15s var(--out) both;-webkit-user-drag:none;user-select:none}
+.portrait{position:absolute;z-index:2;bottom:0;left:0;right:0;margin-inline:auto;height:98%;aspect-ratio:800/1334;max-width:none}
+.pin{position:relative;width:100%;height:100%;animation:lift 1.8s .15s var(--out) both}
+.p-blur,.p-sharp{position:absolute;inset:0;display:block}
+.p-blur img,.p-sharp img{display:block;width:100%;height:100%;-webkit-user-drag:none;user-select:none}
 @keyframes lift{from{transform:translateY(40px) scale(1.04)}to{transform:none}}
 
 .hero-copy{position:absolute;z-index:4;inset-inline:0;bottom:clamp(96px,17vh,180px)}
@@ -269,13 +270,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 }
 @media (max-width:640px){
   body{font-size:16px}
-  .hero{height:auto;min-height:0;padding-top:72px;display:flex;flex-direction:column}
-  .giant{position:relative;top:0;font-size:24vw;order:0}
-  .portrait{position:relative;height:auto;width:min(420px,100%);margin:-30vw auto 0;order:1}
-  .hero-copy{position:relative;bottom:auto;margin-top:-170px;order:2;padding-bottom:36px}
+  .stage{height:100svh}
+  .giant{top:72px;font-size:24vw}
+  .portrait{top:calc(72px + 8vw);bottom:auto;height:auto;width:min(420px,100%)}
+  .hero{height:auto;padding-top:calc(72px + 8vw + min(420px,100vw) * 1.6675 - 190px)}
+  .hero-copy{position:relative;bottom:auto;padding-bottom:36px}
   .facts{text-align:start}
   .scroll-cue{display:none}
-  .hero::after{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -295,23 +296,25 @@ img{max-width:100%}
 
 
 
+<div class="stage" id="stage">
+    <p class="giant" id="giant" aria-hidden="true">
+      <span class="row"><span>HUSSAIN</span></span><span class="row"><span>MHNNA</span></span>
+    </p>
+    <div class="portrait" id="portrait"><div class="pin">
+      <picture class="p-blur"><source srcset="portrait-blur.avif" type="image/avif"><img src="portrait-blur.png" alt="" width="800" height="1334" decoding="async"></picture>
+      <picture class="p-sharp"><source srcset="portrait-cut.avif" type="image/avif"><img src="portrait-cut.png" alt="Portrait of Hussain Mhnna" width="800" height="1334" decoding="async" fetchpriority="high"></picture>
+    </div></div>
+</div>
+
 <main id="top">
   <div class="hero" id="hero">
-    <i class="hero-sentinel" id="sentinel" aria-hidden="true"></i>
+    <i class="hero-mark" id="mark-soft" style="top:30%" aria-hidden="true"></i>
+    <i class="hero-mark" id="mark-gone" style="top:78%" aria-hidden="true"></i>
     <div class="lang-float">
       <div class="lang" role="group" aria-label="Language">
         <button type="button" class="en" id="btn-en" aria-pressed="true">EN</button>
         <button type="button" class="ar" id="btn-ar" aria-pressed="false">عربي</button>
       </div>
-    </div>
-    <p class="giant" id="giant" aria-hidden="true">
-      <span class="row"><span>HUSSAIN</span></span><span class="row"><span>MHNNA</span></span>
-    </p>
-    <div class="portrait" id="portrait">
-      <picture>
-        <source srcset="portrait-cut.avif" type="image/avif">
-        <img src="portrait-cut.png" alt="Portrait of Hussain Mhnna" width="800" height="1334" decoding="async" fetchpriority="high">
-      </picture>
     </div>
     <div class="hero-copy">
       <div class="wrap">
@@ -469,7 +472,7 @@ img{max-width:100%}
   (function(){
     var done = false;
     function go(){ if(!done){ done = true; root.classList.add('ready'); } }
-    var pim = document.querySelector('#portrait img');
+    var pim = document.querySelector('.p-sharp img');
     (pim.decode ? pim.decode().catch(function(){}) : Promise.resolve()).then(go);
     setTimeout(go, 2500);
   })();
@@ -495,15 +498,17 @@ img{max-width:100%}
   tick(); setInterval(tick, 30000);
 
   /* ——— hero on scroll ———
-     One IntersectionObserver flips a class; CSS transitions do the motion.
-     No scroll listener, no per-frame JavaScript — smooth on iPhone Safari. */
-  var hero = document.getElementById('hero');
+     Browsers with scroll-driven animations scrub the fade themselves (CSS above).
+     Others get two steps from an observer: soften, then gone. No per-frame JavaScript. */
+  var hero = document.getElementById('hero'), stageEl = document.getElementById('stage');
   var giant = document.getElementById('giant'), portrait = document.getElementById('portrait');
-  if(!reduce && 'IntersectionObserver' in window){
-    new IntersectionObserver(function(es){
-      var e = es[0];
-      hero.classList.toggle('away', !e.isIntersecting && e.boundingClientRect.top < 0);
-    }).observe(document.getElementById('sentinel'));
+  if('IntersectionObserver' in window){
+    [['mark-soft','soft'],['mark-gone','gone']].forEach(function(m){
+      new IntersectionObserver(function(es){
+        var e = es[0];
+        stageEl.classList.toggle(m[1], !e.isIntersecting && e.boundingClientRect.top < 0);
+      }).observe(document.getElementById(m[0]));
+    });
   }
 
   /* rim light follows the pointer */
