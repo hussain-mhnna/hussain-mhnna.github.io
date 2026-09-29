@@ -61,16 +61,20 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--rim);outline-offset
 main,footer{position:relative;z-index:1}
 .hero{position:relative;height:clamp(640px,100svh,960px);isolation:isolate}
 .hero-mark{position:absolute;left:0;width:1px;height:1px;pointer-events:none}
-.giant{transition:opacity .8s var(--ease)}
-.p-sharp{transition:opacity 1s var(--ease)}
+/* blur + dim: sharp photo crossfades into a pre-blurred, darker copy while a black veil rises */
+.scrim{position:absolute;inset:0;z-index:3;background:var(--bg);opacity:0;transition:opacity .9s var(--ease)}
+.giant{transition:opacity .7s var(--ease)}
+.p-sharp{transition:opacity .8s var(--ease)}
 .stage.soft .giant,.stage.soft .p-sharp{opacity:0}
-.stage.gone{opacity:0}
+.stage.soft .scrim{opacity:.55}
+.stage.gone .scrim{opacity:1}
 @keyframes fadeAway{to{opacity:0}}
+@keyframes veil{to{opacity:1}}
 @supports (animation-timeline: scroll()){
   /* scrubbed with the scroll by the browser itself — off the main thread */
-  .stage .giant{animation:fadeAway linear both;animation-timeline:scroll(root);animation-range:0 38vh}
-  .stage .p-sharp{animation:fadeAway linear both;animation-timeline:scroll(root);animation-range:6vh 62vh}
-  .stage{animation:fadeAway linear both;animation-timeline:scroll(root);animation-range:48vh 110vh}
+  .stage .giant{animation:fadeAway both;animation-timing-function:cubic-bezier(.4,0,.6,1);animation-timeline:scroll(root);animation-range:0 26vh}
+  .stage .p-sharp{animation:fadeAway both;animation-timing-function:cubic-bezier(.45,0,.55,1);animation-timeline:scroll(root);animation-range:2vh 34vh}
+  .stage .scrim{animation:veil both;animation-timing-function:cubic-bezier(.4,0,.7,1);animation-timeline:scroll(root);animation-range:6vh 58vh}
 }
 .giant{
   position:absolute;left:0;right:0;top:9%;z-index:1;margin:0;direction:ltr;
@@ -240,8 +244,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 /* name lit letter by letter, like the rim light in the portrait */
 .giant .ch{display:inline-block;--k:0;
   color:color-mix(in srgb,var(--rim) calc(var(--k) * 70%),var(--ghost));
-  text-shadow:0 0 calc(var(--k) * 60px) rgba(240,164,91,calc(var(--k) * .45))}
-@media (hover:none){.giant .ch{text-shadow:none}}
+}
 
 /* tools ribbon */
 .ribbon{border-block:1px solid var(--line);overflow:hidden;direction:ltr;padding-block:20px;
@@ -304,12 +307,13 @@ img{max-width:100%}
       <picture class="p-blur"><source srcset="portrait-blur.avif" type="image/avif"><img src="portrait-blur.png" alt="" width="800" height="1334" decoding="async"></picture>
       <picture class="p-sharp"><source srcset="portrait-cut.avif" type="image/avif"><img src="portrait-cut.png" alt="Portrait of Hussain Mhnna" width="800" height="1334" decoding="async" fetchpriority="high"></picture>
     </div></div>
+  <i class="scrim" aria-hidden="true"></i>
 </div>
 
 <main id="top">
   <div class="hero" id="hero">
-    <i class="hero-mark" id="mark-soft" style="top:30%" aria-hidden="true"></i>
-    <i class="hero-mark" id="mark-gone" style="top:78%" aria-hidden="true"></i>
+    <i class="hero-mark" id="mark-soft" style="top:18%" aria-hidden="true"></i>
+    <i class="hero-mark" id="mark-gone" style="top:52%" aria-hidden="true"></i>
     <div class="lang-float">
       <div class="lang" role="group" aria-label="Language">
         <button type="button" class="en" id="btn-en" aria-pressed="true">EN</button>
@@ -502,7 +506,8 @@ img{max-width:100%}
      Others get two steps from an observer: soften, then gone. No per-frame JavaScript. */
   var hero = document.getElementById('hero'), stageEl = document.getElementById('stage');
   var giant = document.getElementById('giant'), portrait = document.getElementById('portrait');
-  if('IntersectionObserver' in window){
+  var scrubbed = !reduce && window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+  if(!scrubbed && 'IntersectionObserver' in window){
     [['mark-soft','soft'],['mark-gone','gone']].forEach(function(m){
       new IntersectionObserver(function(es){
         var e = es[0];
