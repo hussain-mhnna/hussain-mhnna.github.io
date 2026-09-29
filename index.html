@@ -65,14 +65,18 @@ main,footer{position:relative;z-index:1}
 .scrim{position:absolute;inset:0;z-index:3;background:var(--bg);opacity:0;transition:opacity .9s var(--ease)}
 .giant{transition:opacity .7s var(--ease)}
 .p-sharp{transition:opacity .8s var(--ease)}
+.p-blur{opacity:0;transition:opacity .8s var(--ease)}
+.stage.soft .p-blur{opacity:1}
 .stage.soft .giant,.stage.soft .p-sharp{opacity:0}
 .stage.soft .scrim{opacity:.55}
 .stage.gone .scrim{opacity:1}
 @keyframes fadeAway{to{opacity:0}}
 @keyframes veil{to{opacity:1}}
+@keyframes appear{from{opacity:0}to{opacity:1}}
 @supports (animation-timeline: scroll()){
   /* scrubbed with the scroll by the browser itself — off the main thread */
   .stage .giant{animation:fadeAway both;animation-timing-function:cubic-bezier(.4,0,.6,1);animation-timeline:scroll(root);animation-range:0 26vh}
+  .stage .p-blur{animation:appear both;animation-timing-function:cubic-bezier(.45,0,.55,1);animation-timeline:scroll(root);animation-range:2vh 22vh}
   .stage .p-sharp{animation:fadeAway both;animation-timing-function:cubic-bezier(.45,0,.55,1);animation-timeline:scroll(root);animation-range:2vh 34vh}
   .stage .scrim{animation:veil both;animation-timing-function:cubic-bezier(.4,0,.7,1);animation-timeline:scroll(root);animation-range:6vh 58vh}
 }
@@ -304,7 +308,7 @@ img{max-width:100%}
       <span class="row"><span>HUSSAIN</span></span><span class="row"><span>MHNNA</span></span>
     </p>
     <div class="portrait" id="portrait"><div class="pin">
-      <picture class="p-blur"><source srcset="portrait-blur.avif" type="image/avif"><img src="portrait-blur.png" alt="" width="800" height="1334" decoding="async"></picture>
+      <picture class="p-blur"><source srcset="portrait-blur-v2.avif" type="image/avif"><img src="portrait-blur-v2.png" alt="" width="800" height="1334" decoding="async"></picture>
       <picture class="p-sharp"><source srcset="portrait-cut.avif" type="image/avif"><img src="portrait-cut.png" alt="Portrait of Hussain Mhnna" width="800" height="1334" decoding="async" fetchpriority="high"></picture>
     </div></div>
   <i class="scrim" aria-hidden="true"></i>
