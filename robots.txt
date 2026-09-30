@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hussain-mhnna.github.io/sitemap.xml
