@@ -28,4 +28,18 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://hussain-mhnna.github.io/ar/hamidya/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://hussain-mhnna.github.io/hamidya/"/>
   </url>
+  <url>
+    <loc>https://hussain-mhnna.github.io/design/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hussain-mhnna.github.io/design/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://hussain-mhnna.github.io/ar/design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hussain-mhnna.github.io/design/"/>
+  </url>
+  <url>
+    <loc>https://hussain-mhnna.github.io/ar/design/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://hussain-mhnna.github.io/design/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://hussain-mhnna.github.io/ar/design/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://hussain-mhnna.github.io/design/"/>
+  </url>
 </urlset>
