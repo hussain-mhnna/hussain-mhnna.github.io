@@ -1,0 +1,29 @@
+# Hussain Mhnna (حسين مهنّا)
+
+> Hussain Mhnna is a software developer and designer, Syrian, based in Germany. He founded Hamidya (الحميدية), an online classifieds marketplace for Syria available on the App Store, Google Play and hamidya.com, and built it end to end: product design, the iOS and Android apps (Flutter), the backend (Firebase, Cloud Functions, Node.js) and the admin tools.
+
+> حسين مهنّا مطوّر برمجيات ومصمّم سوريّ مقيم في ألمانيا. أسّس الحميدية، السوق الإلكتروني للإعلانات المبوّبة في سوريا، المتاحة على App Store و Google Play وفي موقع hamidya.com، وبناها كاملةً: تصميم المنتج، وتطبيقا iOS و Android بـ Flutter، والأنظمة الخلفية، وأدوات الإدارة.
+
+## Key facts
+- Name: Hussain Mhnna · حسين مهنّا
+- Role: Software Developer & Designer · مطوّر برمجيات ومصمّم
+- Based in: Germany · From: Syria
+- Founder of: Hamidya (الحميدية) — https://hamidya.com
+- Languages: Arabic, English
+
+## Work
+- Hamidya (2026, founder): classifieds marketplace for Syria — buy and sell cars, real estate, phones, electronics, furniture and more across all 14 governorates. 1,400+ listings. iOS: https://apps.apple.com/app/id6808819752 · Android: https://play.google.com/store/apps/details?id=mzad.syria · Case study: https://hussain-mhnna.github.io/hamidya/
+- Hussain Designer: brand identity and visual design portfolio — https://instagram.com/hussain.designer · https://www.pinterest.com/Hussain_designer/ · https://www.redbubble.com/people/hussain-dz/shop
+- Brain Race (2025, developer): quiz game, his first published app — https://play.google.com/store/apps/details?id=com.Hussain_Mhnna.brain_race
+
+## Expertise
+Product design (interface, interaction, design systems) · Mobile development (Flutter, Dart, iOS, Android) · Backend engineering (Firebase, Cloud Functions, Node.js) · Brand identity and motion design.
+
+## Pages
+- English: https://hussain-mhnna.github.io/
+- العربية: https://hussain-mhnna.github.io/ar/
+- Hamidya case study: https://hussain-mhnna.github.io/hamidya/ · https://hussain-mhnna.github.io/ar/hamidya/
+
+## Contact
+- Email: hussain.mhnna@gmail.com
+- Instagram: https://instagram.com/hussain.mhnna
