@@ -24,6 +24,7 @@ Product design (interface, interaction, design systems) · Mobile development (F
 - العربية: https://hussain-mhnna.github.io/ar/
 - Hamidya case study: https://hussain-mhnna.github.io/hamidya/ · https://hussain-mhnna.github.io/ar/hamidya/
 - Design gallery: https://hussain-mhnna.github.io/design/ · https://hussain-mhnna.github.io/ar/design/
+- LinkedIn: https://www.linkedin.com/in/hussain-mhnna
 - GitHub: https://github.com/hussain-mhnna
 
 ## Contact
